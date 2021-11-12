@@ -1,0 +1,29 @@
+{
+  "name": "music",
+  "version": "1.0.0",
+  "description": "Musical tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zyxneo/music.git"
+  },
+  "keywords": [
+    "music",
+    "notes",
+    "staff",
+    "keys"
+  ],
+  "author": "Balazs Szilagyi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zyxneo/music/issues"
+  },
+  "homepage": "https://github.com/zyxneo/music#readme",
+  "dependencies": {
+    "prettier": "^2.4.1",
+    "webmidi": "^2.5.3"
+  }
+}

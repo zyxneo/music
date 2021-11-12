@@ -1,0 +1,18 @@
+:root {
+  --staff-color: #000;
+  --staff-unit: 5px;
+}
+/* SVG */
+
+.line {
+  stroke: var(--staff-color);
+  stroke-width: 1;
+}
+
+.note {
+  transform: translateY(calc(var(--staff-unit) * 6));
+}
+
+.G4 {
+  transform: translateY(calc(var(--staff-unit) * 14));
+}
