@@ -33,5 +33,10 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    },
   },
 };
