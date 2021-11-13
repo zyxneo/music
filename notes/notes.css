@@ -1,6 +1,21 @@
 :root {
   --staff-color: #000;
   --staff-unit: 5px;
+  --color-error: #f00;
+  --color-success: #0f0;
+  --color-text-inverted: #fff;
+}
+
+.result {
+  font-weight: bold;
+}
+.result.success {
+  background-color: var(--color-success);
+  color: var(--color-text-inverted);
+}
+.result.error {
+  background-color: var(--color-error);
+  color: var(--color-text-inverted);
 }
 /* SVG */
 
