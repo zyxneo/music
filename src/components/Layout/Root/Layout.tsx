@@ -3,6 +3,8 @@ import React, { ReactNode } from "react";
 
 import { Footer, Header } from "components";
 
+import '../../../style.css'
+
 type Props = {
   children: ReactNode;
   className?: string;

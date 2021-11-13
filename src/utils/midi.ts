@@ -1,4 +1,22 @@
-const keyboardKeyNames = [
+
+export const midiKeyNames = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+] as const;
+
+export const octaves = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+export const keyboardKeyNames = [
   "C-1",
   "C#-1",
   "D-1",
@@ -131,4 +149,4 @@ const keyboardKeyNames = [
   "A9",
   "A#9",
   "B9",
-];
+] as const;
