@@ -1,4 +1,5 @@
 import { FormattedMessage } from "gatsby-plugin-intl";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import WebMidi, { Input } from "webmidi";
 
@@ -16,11 +17,15 @@ import "./notes-on-the-staff.css";
 
 const IndexPage = () => {
   const [inputDeviceList, setInputDeviceList] = useState([] as Input[]);
+  const [selectedInputDevice, setSelectedInputDevice] = useState(
+    Cookies.get("selectedMidiInputDevice")
+  );
   const [midiEnabled, setMidiEnabled] = useState(false);
   const [midiNote, setMidiNote] = useState("");
   const [requestedKey, setRequestedKey] = useState("");
   const [randomIndex, setRandomIndex] = useState(0);
   const [successState, setSuccessState] = useState(false);
+  const [practiceCount, setPracticeCount] = useState(0);
 
   const staffUnit = 5; // distance of note steps on the staff svg
   const minIndex = 6; // index of the note on the staff svg, from top to bottom
@@ -66,6 +71,7 @@ const IndexPage = () => {
   }
 
   function createTask() {
+    setPracticeCount(practiceCount + 1);
     getRandomNote();
   }
 
@@ -77,7 +83,7 @@ const IndexPage = () => {
     } else {
       setSuccessState(false);
     }
-  }, [midiNote]);
+  }, [midiNote, practiceCount]);
 
   useEffect(() => {
     WebMidi.enable(function (err) {
@@ -85,40 +91,42 @@ const IndexPage = () => {
         console.log("WebMidi could not be enabled.", err);
       } else {
         console.log("WebMidi enabled!");
-
+        setMidiEnabled(true);
         createTask();
       }
       // Viewing available inputs and outputs
       if (WebMidi.inputs.length) {
         // TODO temp
-        // setInputDeviceList(WebMidi.inputs);
+        setInputDeviceList(WebMidi.inputs);
       }
       // console.log(WebMidi.outputs);
 
       // Reacting when a new device becomes available
       WebMidi.addListener("connected", function (e) {
-        // console.log(e);
+        if (selectedInputDevice) {
+          setInput(selectedInputDevice);
+        }
+        // console.log("connected", e.port.name);
       });
 
       // Reacting when a device becomes unavailable
       WebMidi.addListener("disconnected", function (e) {
+        // TODO display warning
         // console.log(e);
       });
 
       // Display the current time
       // console.log(WebMidi.time);
-      setInput(); // TODO temp
     });
   }, [inputDeviceList]);
 
-  function setInput(inputName) {
-    // var input = WebMidi.getInputByName(inputName);
-    const input = WebMidi.getInputById(
-      "166785C23D6410F7D2F97C6AD604552C180563D55301D5A5033E2D77FDC2B3A7"
-    ); // TODO temp
+  function setInput(inputId: string) {
+    Cookies.set("selectedMidiInputDevice", inputId, { expires: 365 });
 
-    if (input) {
-      console.log("setInput", input);
+    var input = WebMidi.getInputById(inputId);
+    setSelectedInputDevice(inputId);
+
+    if (input && midiEnabled) {
       input.addListener("noteon", "all", function (e) {
         console.log(e);
         // TODO all props, array of keys
@@ -128,9 +136,9 @@ const IndexPage = () => {
     }
   }
 
-  // if (!midiEnabled) {
-  //   return <div>Error TODO</div>;
-  // }
+  if (!midiEnabled) {
+    return <div>Error TODO</div>;
+  }
 
   return (
     <Layout className="home">
@@ -138,8 +146,27 @@ const IndexPage = () => {
       <h1>learn notes</h1>
 
       <section className="staff">
-        <div className="requestedKeyName">{requestedKey}</div>
-        <div className="lastKeyName">{midiNote}</div>
+        <div className="requestedKeyName">
+          <FormattedMessage
+            id="staff.requestedKey"
+            defaultMessage="Requested Key"
+          />
+          <span className="keyName">{requestedKey}</span>
+        </div>
+        <div className="lastKeyName">
+          <FormattedMessage
+            id="staff.pressedKey"
+            defaultMessage="Pressed Key"
+          />
+          <span className="keyName">{midiNote}</span>
+        </div>
+        <div className="practiceCount">
+          <FormattedMessage
+            id="staff.pressedKey"
+            defaultMessage="Pressed Key"
+          />
+          <span className="counter">{practiceCount}</span>
+        </div>
         <div className="staff">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -182,16 +209,24 @@ const IndexPage = () => {
         </div>
       </section>
       <section className="devices">
-        <h3>Devices</h3>
+        <h3>Available devices</h3>
         <div className="inputDeviceList">
           {inputDeviceList.map((device) => {
             return (
               <div
+                className="inputDeviceList__item"
                 key={device.id}
                 id={device.id}
-                onClick={() => setInput(device.name)}
               >
-                {device.name}
+                <input
+                  type="radio"
+                  id={device.name}
+                  name="midiInput"
+                  value={device.id}
+                  checked={device.id === selectedInputDevice}
+                  onChange={() => setInput(device.id)}
+                />
+                <label htmlFor={device.name}>{device.name}</label>
               </div>
             );
           })}

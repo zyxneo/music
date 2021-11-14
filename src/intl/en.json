@@ -1,4 +1,6 @@
 {
     "site.title": "Online music practices",
-    "site.description": "Online music practices"
+    "site.description": "Online music practices",
+    "staff.requestedKey": "Requested Key",
+    "staff.pressedKey": "Pressed Key"
 }
