@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 
-import trebleClef from "images/staff/trebleClef.svg";
-import bassClef from "images/staff/bassClef.svg";
-import grandStaffBrace from "images/staff/grandStaffBrace.svg";
-import wholeNote from "images/staff/wholeNote.svg";
+import TrebleClef from "components/SVGs/TrebleClef";
+import BassCleff from "components/SVGs/BassCleff";
+import GrandStaffBrace from "components/SVGs/GrandStaffBrace";
+import WholeNote from "components/SVGs/WholeNote";
+import Sharp from "components/SVGs/Sharp";
+import Flat from "components/SVGs/Flat";
 
 import "./staff.css";
 
@@ -25,17 +27,151 @@ const Staff = (props: Props) => {
   const lineX2 = 500;
   const ledgerX1 = noteX - staffUnit;
   const ledgerX2 = noteX + noteWidth + staffUnit;
+  const renderNote = function ({
+    x,
+    noteIndex,
+  }: {
+    x: number;
+    noteIndex: number;
+  }) {
+    return (
+      <>
+        <use
+          xlinkHref="#wholeNote"
+          height={staffUnit * 2}
+          x={x}
+          y={staffUnit * noteIndex}
+        ></use>
+
+        <use
+          display="none"
+          xlinkHref="#flat"
+          className="flat"
+          x={x - staffUnit * 3}
+          y={staffUnit * noteIndex - staffUnit * 4}
+        ></use>
+      </>
+    );
+  };
   return (
     <div className="staff">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        className="bassClef"
+        className="staff"
         height="400"
         width="800"
         version="1.1"
         viewBox="200 0 100 250"
       >
+        <symbol id="sharp">
+          <Sharp />
+        </symbol>
+        <symbol id="flat">
+          <Flat />
+        </symbol>
+        <symbol id="trebleCleff">
+          <TrebleClef />
+        </symbol>
+        <symbol id="bassCleff">
+          <BassCleff />
+        </symbol>
+        <symbol id="grandStaffBrace">
+          <GrandStaffBrace />
+        </symbol>
+        <symbol id="wholeNote">
+          <WholeNote />
+        </symbol>
+        <symbol id="signatures">
+          <g className="sharp-signatures" display="none">
+            <use
+              xlinkHref="#sharp"
+              className="sharp-1"
+              x={0}
+              y={staffUnit * 6}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-2"
+              x={staffUnit * (10 / 6)}
+              y={staffUnit * 9}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-3"
+              x={staffUnit * (10 / 6) * 2}
+              y={staffUnit * 5}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-4"
+              x={staffUnit * (10 / 6) * 3}
+              y={staffUnit * 8}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-5"
+              x={staffUnit * (10 / 6) * 4}
+              y={staffUnit * 11}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-6"
+              x={staffUnit * (10 / 6) * 5}
+              y={staffUnit * 7}
+            ></use>
+            <use
+              xlinkHref="#sharp"
+              className="sharp-7"
+              x={staffUnit * 10}
+              y={staffUnit * 10}
+            ></use>
+          </g>
+          <g className="flat-signatures" display="none">
+            <use
+              xlinkHref="#flat"
+              className="flat-1"
+              x={0}
+              y={staffUnit * 8}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-2"
+              x={staffUnit * (10 / 6)}
+              y={staffUnit * 5}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-3"
+              x={staffUnit * (10 / 6) * 2}
+              y={staffUnit * 9}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-4"
+              x={staffUnit * (10 / 6) * 3}
+              y={staffUnit * 6}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-5"
+              x={staffUnit * (10 / 6) * 4}
+              y={staffUnit * 10}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-6"
+              x={staffUnit * (10 / 6) * 5}
+              y={staffUnit * 7}
+            ></use>
+            <use
+              xlinkHref="#flat"
+              className="flat-7"
+              x={staffUnit * 10}
+              y={staffUnit * 11}
+            ></use>
+          </g>
+        </symbol>
         <g className="treble">
           <g className="ledger">
             <line
@@ -125,12 +261,13 @@ const Staff = (props: Props) => {
               y2={staffUnit * 23}
             ></line>
           </g>
-          <image
-            xlinkHref={trebleClef}
-            height={staffUnit * 15}
-            x={lineX1}
+          <use
+            xlinkHref="#trebleCleff"
+            x={staffUnit * -2.5}
             y={staffUnit * 6 - (staffUnit / 5) * 1}
-          ></image>
+            height={staffUnit * 15}
+          ></use>
+          <use xlinkHref="#signatures" x={staffUnit * 12}></use>
         </g>
         <g className="bass">
           <g className="ledger">
@@ -221,23 +358,28 @@ const Staff = (props: Props) => {
               y2={staffUnit * 45}
             ></line>
           </g>
-          <image
-            xlinkHref={bassClef}
+
+          <use
+            xlinkHref="#bassCleff"
             height={staffUnit * 15}
-            x={lineX1}
+            x={staffUnit * -2.5}
             y={staffUnit * 27}
-          ></image>
+          ></use>
+
+          <use
+            xlinkHref="#signatures"
+            x={staffUnit * 12}
+            y={staffUnit * 22}
+          ></use>
         </g>
         <g className="bars">
-
-            <image
-            className="grandStaffBrace"
-            xlinkHref={grandStaffBrace}
+          <use
+            xlinkHref="#grandStaffBrace"
             height={staffUnit * 30}
             width={braceWidth}
             x={lineX1 - braceWidth}
             y={staffUnit * 9}
-            ></image>
+          ></use>
           <line
             className="line"
             x1={lineX1}
@@ -257,16 +399,10 @@ const Staff = (props: Props) => {
             y={staffUnit * 9}
             width={staffUnit / 2}
             height={staffUnit * 30}
+            stroke="none"
           />
         </g>
-        <image
-          className="note"
-          xlinkHref={wholeNote}
-          height={staffUnit * 2}
-          width={noteWidth}
-          x={noteX}
-          y={staffUnit * noteIndex}
-        ></image>
+        {renderNote({ x: noteX, noteIndex })}
       </svg>
     </div>
   );

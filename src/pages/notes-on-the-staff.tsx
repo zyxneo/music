@@ -147,7 +147,7 @@ const IndexPage = () => {
       <SEO title="TODO" />
       <h1>learn notes</h1>
 
-      <section className="staff">
+      <section>
         <div className="requestedKeyName">
           <FormattedMessage
             id="staff.requestedKey"
