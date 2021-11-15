@@ -1,0 +1,6 @@
+/* SVG */
+
+.line {
+  stroke: var(--staff-color);
+  stroke-width: 1;
+}

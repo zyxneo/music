@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import WebMidi, { Input } from "webmidi";
 
-import { Layout, SEO } from "components";
+import { Layout, SEO, Staff } from "components";
 import { midiKeyNames } from "utils/midi";
 import classNames from "classnames";
 
@@ -27,10 +27,12 @@ const IndexPage = () => {
   const [successState, setSuccessState] = useState(false);
   const [practiceCount, setPracticeCount] = useState(0);
 
-  const staffUnit = 5; // distance of note steps on the staff svg
   const minIndex = 6; // index of the note on the staff svg, from top to bottom
   const maxIndex = 18;
-  const startIndex = 53;
+  const startIndex = 60; // For MIDI, middle C is always note number 60 even though it may be another pitch or described by a different octave designation - C3, C4 or C5.
+  // MIDI standard is only that note 60 is middle C
+  // TODO use midi note numbers instead of note names (octave numbering can differ by manufacturers
+  // limit are the 128 notes of MIDI range of 0-127
 
   const scaleCMajor = {
     midiKey: "C",
@@ -64,7 +66,7 @@ const IndexPage = () => {
     );
     const scale = getScaleKeyNames(scaleCMajor); // TODO make it dynamic
     const keyIndex = startIndex - randomIndex;
-    const octave = Math.floor(keyIndex / 7) - 1;
+    const octave = Math.floor(keyIndex / 7) - 2;
     const noteKeyName = scale[keyIndex % 7];
     setRequestedKey(noteKeyName + octave);
     setRandomIndex(randomIndex);
@@ -167,38 +169,7 @@ const IndexPage = () => {
           />
           <span className="counter">{practiceCount}</span>
         </div>
-        <div className="staff">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            id="bassClef"
-            height="400"
-            width="100%"
-            version="1.1"
-            viewBox="200 0 100 250"
-          >
-            <line className="line" x1="0" y1="45" x2="500" y2="45"></line>
-            <line className="line" x1="0" y1="55" x2="500" y2="55"></line>
-            <line className="line" x1="0" y1="65" x2="500" y2="65"></line>
-            <line className="line" x1="0" y1="75" x2="500" y2="75"></line>
-            <line className="line" x1="0" y1="85" x2="500" y2="85"></line>
-            <image
-              xlinkHref={trebleClef}
-              height="75"
-              width="44"
-              x="0"
-              y="30"
-            ></image>
-            <image
-              id="note"
-              xlinkHref={wholeNote}
-              height="10"
-              width="15"
-              x="242"
-              y={staffUnit * randomIndex}
-            ></image>
-          </svg>
-        </div>
+        <Staff noteIndex={randomIndex} />
         <div
           className={classNames(
             "result",
