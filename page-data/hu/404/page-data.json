@@ -1,0 +1,6 @@
+{
+    "componentChunkName": "component---src-pages-404-tsx",
+    "path": "/hu/404/",
+    "result": {"pageContext":{"language":"hu","intl":{"language":"hu","languages":["en","hu"],"messages":{"site.title":"Online zenei gyakorlatok","site.description":"Online zenei gyakorlatok"},"routed":true,"originalPath":"/404/","redirect":true,"defaultLanguage":"en"}}},
+    "staticQueryHashes": [],
+    "matchPath": "/hu/*"}

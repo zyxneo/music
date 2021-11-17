@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-pages-notes-on-the-staff-tsx",
+    "path": "/notes-on-the-staff/",
+    "result": {"pageContext":{"language":"en","intl":{"language":"en","languages":["en","hu"],"messages":{"site.title":"Online music practices","site.description":"Online music practices","staff.requestedKey":"Requested Key","staff.pressedKey":"Pressed Key"},"routed":false,"originalPath":"/notes-on-the-staff/","redirect":true,"defaultLanguage":"en"}}},
+    "staticQueryHashes": []}
