@@ -1,1 +1,21 @@
 @import url(~sanitize.css);
+
+:root {
+  --color-error: #f00;
+  --color-success: #0f0;
+  --color-text-inverted: #fff;
+  --white: #fff;
+
+  --color-primary: blue;
+
+  --spacer: 8px;
+
+  --font-size-default: 16px;
+  --font-size-big: 20px;
+  --text-color-primary: #000;
+
+  --border-radius-small: 2px;
+
+  --animation-duration-base: 0.2s;
+  --animation-duration-base: ease-in-out;
+}

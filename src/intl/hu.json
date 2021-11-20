@@ -1,4 +1,11 @@
 {
     "site.title": "Online zenei gyakorlatok",
-    "site.description": "Online zenei gyakorlatok"
+    "site.description": "Online zenei gyakorlatok",
+    "staff.requestedKey": "Várt billentyű",
+    "staff.pressedKey": "Lenyomott billentyű",
+    "404.page.title": "Elvitte a cica",
+    "404.page.desc": "A keresett oldal nem található",
+    "site.contactInfo": "Kapcsolat",
+    "site.copyright": "Minden jog fenntartva",
+    "site.languageNameOnNativeLanguage": "Magyar"
 }

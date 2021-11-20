@@ -1,0 +1,86 @@
+.flag {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 11px;
+  max-height: 11px;
+  background: url("../../images/flags.png") no-repeat;
+  flex: 0 0 14px;
+  background-position: 0 11px;
+}
+
+.flag.hu {
+  background-position: 0 0;
+}
+
+.flag.en {
+  background-position: 0 -11px;
+}
+
+.flag.de {
+  background-position: 0 -22px;
+}
+
+.flag.pl {
+  background-position: 0 -33px;
+}
+
+.flag.fr {
+  background-position: 0 -44px;
+}
+
+.flag.es {
+  background-position: 0 -55px;
+}
+
+.flag.pt-br {
+  background-position: 0 -66px;
+}
+
+.flag.hr {
+  background-position: 0 -77px;
+}
+
+.flag.fa {
+  background-position: 0 -88px;
+}
+
+.languageSwitcher__button {
+  color: var(--text-color-primary);
+  background: var(--white);
+}
+
+.languageSwitcher__button:hover {
+  color: var(--color-primary);
+}
+
+.languageSwitcher__button .flag {
+  position: relative;
+  margin-inline-start: calc(var(--spacer) * 2);
+}
+
+.languageSwitcher__list {
+  display: flex;
+  margin: 0;
+  flex-wrap: wrap;
+  column-count: 3;
+}
+
+.languageSwitcher__item {
+  display: flex;
+  width: 100px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.languageSwitcher__item .flag {
+  margin-inline-end: calc(var(--spacer) / 2);
+}
+
+.languageSwitcher__item .fa-language {
+  transform: scale(1.6);
+}
+
+.languageSwitcher__item .languageSwitcher__currentLocale {
+  margin: 0 calc(var(--spacer) * 2) 0 var(--spacer);
+}

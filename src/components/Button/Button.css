@@ -1,0 +1,101 @@
+.Button {
+  position: relative;
+  display: inline-block;
+  padding: 6px 16px;
+  /* overflow: hidden; cause issues with focus and active state box-shadows! */
+  font-size: var(--font-size-default);
+  font-weight: 400;
+  line-height: 20px; /* stylelint-disable-line property-disallowed-list */
+  color: var(--color-primary);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background: var(--white);
+  border: 0;
+  border-radius: var(--border-radius-small);
+  outline: none;
+  transition: color var(--animation-duration-base)
+    var(--animation-duration-base);
+  appearance: none;
+}
+
+.Button:hover {
+  text-decoration: none;
+}
+
+.Button:focus {
+  z-index: 2;
+  text-decoration: none;
+  outline: none;
+}
+
+.Button:active {
+  z-index: 1;
+  text-decoration: none;
+  outline: none;
+}
+
+/* Colors */
+
+.Button--primary {
+  color: var(--white);
+  background: var(--color-primary);
+}
+/* Sizes */
+
+.Button--small {
+  height: auto;
+  padding: 2px var(--spacer);
+}
+
+.Button--large {
+  height: auto;
+  padding: 10px calc(var(--spacer) * 2);
+  font-size: var(--font-size-big);
+  font-weight: 700;
+}
+
+.Button--square {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.Button--square.Button.rs-Button--mini {
+  width: 16px;
+  height: 16px;
+}
+
+.Button--square.Button.rs-Button--tiny {
+  width: 20px;
+  height: 20px;
+}
+
+.Button--square.Button.rs-Button--small {
+  width: 24px;
+  height: 24px;
+}
+
+.Button--block {
+  display: block;
+  width: 100%;
+}
+
+.Button:disabled,
+.Button[disabled],
+.Button:disabled:hover,
+.Button[disabled]:hover,
+.Button:disabled:focus,
+.Button[disabled]:focus,
+.Button:disabled:active,
+.Button[disabled]:active {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

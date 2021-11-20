@@ -1,5 +1,6 @@
 import { FormattedMessage } from 'gatsby-plugin-intl';
 import React from 'react';
+import { LanguageSwitcher } from 'components';
 
 function Footer() {
 
@@ -27,6 +28,7 @@ function Footer() {
             </ul>
           </nav>
         </div>
+        <LanguageSwitcher className="footer__languages" />
       </div>
 
       <div className="footer__bottom">
