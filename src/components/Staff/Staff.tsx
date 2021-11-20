@@ -10,14 +10,17 @@ import Flat from "components/SVGs/Flat";
 
 import "./staff.css";
 
-type Props = {
-  noteIndex?: number;
-};
+type Props = { 
+  note: {
+    noteIndex: number; cleff: "treble" | "bass" 
+  }};
 // https://commons.wikimedia.org/wiki/Category:Musical_score_components
 // https://commons.wikimedia.org/wiki/Template:Music
 
 const Staff = (props: Props) => {
-  const { noteIndex = 0 } = props;
+  const { note } = props;
+  const { noteIndex = 0, cleff = "treble" } = note;
+  console.log(noteIndex, cleff)
   const staffUnit = 5; // distance of note steps on the staff svg
 
   const noteX = 200; // 242;
@@ -27,32 +30,35 @@ const Staff = (props: Props) => {
   const lineX2 = 500;
   const ledgerX1 = noteX - staffUnit;
   const ledgerX2 = noteX + noteWidth + staffUnit;
+
   const renderNote = function ({
     x,
     noteIndex,
+    cleff,
   }: {
     x: number;
     noteIndex: number;
+    cleff: "treble" | "bass";
   }) {
+    // notes on the  bass staff are 50 unit lower
+    const trebleCorrection = cleff === "bass" ? staffUnit * 10 : 0;
+    const y = staffUnit * noteIndex + trebleCorrection;
+
     return (
       <>
-        <use
-          xlinkHref="#wholeNote"
-          height={staffUnit * 2}
-          x={x}
-          y={staffUnit * noteIndex}
-        ></use>
+        <use xlinkHref="#wholeNote" height={staffUnit * 2} x={x} y={y}></use>
 
         <use
           display="none"
           xlinkHref="#flat"
           className="flat"
           x={x - staffUnit * 3}
-          y={staffUnit * noteIndex - staffUnit * 4}
+          y={y - staffUnit * 4}
         ></use>
       </>
     );
   };
+
   return (
     <div className="staff">
       <svg
@@ -402,7 +408,7 @@ const Staff = (props: Props) => {
             stroke="none"
           />
         </g>
-        {renderNote({ x: noteX, noteIndex })}
+        {renderNote({ x: noteX, noteIndex, cleff })}
       </svg>
     </div>
   );

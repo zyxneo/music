@@ -7,9 +7,6 @@ import { Layout, SEO, Staff } from "components";
 import { midiKeyNames } from "utils/midi";
 import classNames from "classnames";
 
-import trebleClef from "images/staff/trebleClef.svg";
-import wholeNote from "images/staff/wholeNote.svg";
-
 import "./notes-on-the-staff.css";
 
 // https://commons.wikimedia.org/wiki/Category:Musical_score_components
@@ -23,12 +20,10 @@ const IndexPage = () => {
   const [midiEnabled, setMidiEnabled] = useState(false);
   const [midiNote, setMidiNote] = useState("");
   const [requestedKey, setRequestedKey] = useState("");
-  const [randomIndex, setRandomIndex] = useState(0);
+  const [randomNote, setRandomNote] = useState({});
   const [successState, setSuccessState] = useState(false);
   const [practiceCount, setPracticeCount] = useState(0);
 
-  const minIndex = 6; // index of the note on the staff svg, from top to bottom
-  const maxIndex = 18;
   const startIndex = 60; // For MIDI, middle C is always note number 60 even though it may be another pitch or described by a different octave designation - C3, C4 or C5.
   // MIDI standard is only that note 60 is middle C
   // TODO use midi note numbers instead of note names (octave numbering can differ by manufacturers
@@ -60,30 +55,46 @@ const IndexPage = () => {
     return keys;
   }
 
-  function getRandomNote() {
+  function getRandomNote({ scale, cleff }) {
+    let minIndex = 6; // index of the note on the staff svg, from top to bottom
+    let maxIndex = 18;
+
+    if (cleff === "bass") {
+      minIndex = 13; // index of the note on the staff svg, from top to bottom
+      maxIndex = 34;
+    }
     const randomIndex = Math.floor(
       Math.random() * (maxIndex - minIndex + 1) + minIndex
     );
-    const scale = getScaleKeyNames(scaleCMajor); // TODO make it dynamic
     const keyIndex = startIndex - randomIndex;
     const octave = Math.floor(keyIndex / 7) - 2;
     const noteKeyName = scale[keyIndex % 7];
     setRequestedKey(noteKeyName + octave);
-    setRandomIndex(randomIndex);
+    setRandomNote({ noteIndex: randomIndex, cleff });
   }
 
   function createTask() {
     setPracticeCount(practiceCount + 1);
-    getRandomNote();
+
+    const scale = getScaleKeyNames(scaleCMajor); // TODO make it dynamic
+
+    const randomCleff = Math.random() > 0.5 ? "treble" : "bass";
+    getRandomNote({ scale, cleff: randomCleff });
   }
 
   useEffect(() => {
     // TODO if the random note is the same, no update happens
     if (requestedKey === midiNote) {
-      createTask();
       setSuccessState(true);
     } else {
       setSuccessState(false);
+    }
+  }, [successState]);
+
+  useEffect(() => {
+    // TODO if the random note is the same, no update happens
+    if (requestedKey === midiNote) {
+      createTask();
     }
   }, [midiNote, practiceCount]);
 
@@ -169,7 +180,7 @@ const IndexPage = () => {
           />
           <span className="counter">{practiceCount}</span>
         </div>
-        <Staff noteIndex={randomIndex} />
+        <Staff note={randomNote} />
         <div
           className={classNames(
             "result",

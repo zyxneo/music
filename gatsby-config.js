@@ -1,6 +1,7 @@
 const path = require("path");
 
 module.exports = {
+  pathPrefix: "/music",
   siteMetadata: {
     siteUrl: "https://www.yourdomain.tld",
     title: "Music tools",
