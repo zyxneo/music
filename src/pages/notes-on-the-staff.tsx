@@ -14,9 +14,10 @@ import "./notes-on-the-staff.css";
 
 const IndexPage = () => {
   const [inputDeviceList, setInputDeviceList] = useState([] as Input[]);
-  const [selectedInputDevice, setSelectedInputDevice] = useState(
+  const [selectedInputId, setSelectedInputId] = useState(
     Cookies.get("selectedMidiInputDevice")
   );
+  const [input, setInput] = useState(false);
   const [midiEnabled, setMidiEnabled] = useState(false);
   const [midiNote, setMidiNote] = useState("");
   const [requestedKey, setRequestedKey] = useState("");
@@ -107,39 +108,42 @@ const IndexPage = () => {
         setMidiEnabled(true);
         createTask();
       }
-      // Viewing available inputs and outputs
-      if (WebMidi.inputs.length) {
-        // TODO temp
-        setInputDeviceList(WebMidi.inputs);
-      }
-      // console.log(WebMidi.outputs);
 
       // Reacting when a new device becomes available
       WebMidi.addListener("connected", function (e) {
-        if (selectedInputDevice) {
-          setInput(selectedInputDevice);
+        // console.log("connected", e.port.name, WebMidi.inputs);
+
+        if (selectedInputId) {
+          // console.log("setInputDevice on connected", selectedInputId);
+          setInputDevice(selectedInputId);
         }
-        // console.log("connected", e.port.name);
+
+        setInputDeviceList((e) => {
+          // console.log('setInputDeviceList', e)
+          return WebMidi.inputs
+        });
       });
 
       // Reacting when a device becomes unavailable
       WebMidi.addListener("disconnected", function (e) {
         // TODO display warning
-        // console.log(e);
+        setInputDeviceList(WebMidi.inputs);
+        // console.log("disconnected ");
+        // console.log(e, WebMidi.inputs);
       });
 
-      // Display the current time
-      // console.log(WebMidi.time);
     });
-  }, [inputDeviceList]);
+  }, []);
 
-  function setInput(inputId: string) {
+  function setInputDevice(inputId: string) {
     Cookies.set("selectedMidiInputDevice", inputId, { expires: 365 });
+    setSelectedInputId(inputId);
 
-    var input = WebMidi.getInputById(inputId);
-    setSelectedInputDevice(inputId);
+    const input = WebMidi.getInputById(inputId);
 
-    if (input && midiEnabled) {
+    if (input) {
+      setInput(input);
+      // console.log("addListener set on ", input);
       input.addListener("noteon", "all", function (e) {
         console.log(e);
         // TODO all props, array of keys
@@ -205,8 +209,8 @@ const IndexPage = () => {
                   id={device.name}
                   name="midiInput"
                   value={device.id}
-                  checked={device.id === selectedInputDevice}
-                  onChange={() => setInput(device.id)}
+                  checked={device.id === selectedInputId}
+                  onChange={() => setInputDevice(device.id)}
                 />
                 <label htmlFor={device.name}>{device.name}</label>
               </div>
