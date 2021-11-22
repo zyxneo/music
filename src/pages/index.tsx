@@ -1,24 +1,21 @@
-import { FormattedMessage } from 'gatsby-plugin-intl';
-import React from 'react';
+import { FormattedMessage } from "gatsby-plugin-intl";
+import React from "react";
 
-import { Layout, SEO } from 'components';
+import { Layout, SEO, PianoKeyboard } from "components";
 
 const IndexPage = () => {
-
   return (
-        <Layout className="home">
-          <SEO title="TODO" />
+    <Layout className="home">
+      <SEO title="TODO" />
 
-          <section className="home__intro">
-            <div className="container intro">
-              <div className="intro__logo">hi</div>
-              <h1 className="intro__title">TODO
-              </h1>
-              </div>
-
-              </section>
-
-        </Layout>
+      <section className="home__intro">
+        <div className="container intro">
+          <div className="intro__logo">hi</div>
+          <h1 className="intro__title">TODO</h1>
+        </div>
+        <PianoKeyboard />
+      </section>
+    </Layout>
   );
 };
 
