@@ -2,22 +2,21 @@
   --piano-key-white: #fff;
   --piano-key-white-stroke: #888;
   --piano-key-black: #333;
-  --piano-key-black-stroke: #000;
+  --piano-key-black-stroke: rgba(0, 0, 0, 0.5);
 
-  --marker-color-hue: 100;
-  --marker-background-color: hsl(var(--marker-color-hue), 100%, calc(50% / 2));
-  --marker-stroke-color: hsl(
-    calc(var(--marker-color-hue) - 50),
-    100%,
-    calc(50% / 2)
-  );
-  --marker-text-color: black;
+  --marker-background-color: hsl(143, 60%, 65%);
+  --marker-stroke-color: hsl(143, 60%, 45%);
+  --marker-text-color: #999;
+  --marker-text-dot-color: #555;
 }
 
-.PianoKeyboard {
+.pianoKeyboard {
   width: 100%;
 }
-
+.pianoKeyboard__grandStroke {
+  fill: #fa0501;
+  stroke: none;
+}
 .key--white {
   stroke: var(--piano-key-white-stroke);
   fill: var(--piano-key-white);
@@ -27,15 +26,25 @@
 .key--black {
   stroke: var(--piano-key-black-stroke);
   fill: var(--piano-key-black);
+  stroke-width: 6;
 }
 
-.key__dotMarker circle {
+.key__marker circle {
   stroke: var(--marker-stroke-color);
   fill: var(--marker-background-color);
   stroke-width: 4;
 }
 
-.key__dotMarker text {
+.key__marker text {
   font-size: 32px;
   fill: var(--marker-text-color);
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+}
+
+.key__marker.key__marker--black text {
+  fill: var(--marker-text-color);
+}
+
+.key__marker.key__marker--dot text {
+  fill: var(--marker-text-dot-color);
 }

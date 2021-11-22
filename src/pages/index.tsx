@@ -13,7 +13,8 @@ const IndexPage = () => {
           <div className="intro__logo">hi</div>
           <h1 className="intro__title">TODO</h1>
         </div>
-        <PianoKeyboard />
+
+        <PianoKeyboard startOctave={3} octaves={5} />
       </section>
     </Layout>
   );
