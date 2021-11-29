@@ -54,6 +54,7 @@
     "webmidi": "^2.5.3"
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "react-piano": "^3.1.3"
   }
 }

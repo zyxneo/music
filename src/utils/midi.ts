@@ -14,7 +14,26 @@ export const midiKeyNames = [
   "B",
 ] as const;
 
+export const pitches = [
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "A",
+  "B",
+] as const;
+
 export const octaves = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+export const scaleCMajor = {
+  midiKey: "C",
+  steps: [2, 2, 1, 2, 2, 2, 1],
+};
+export const scaleGMajor = {
+  midiKey: "G",
+  steps: [2, 2, 1, 2, 2, 2, 1],
+};
 
 export const keyboardKeyNames = [
   "C-1",

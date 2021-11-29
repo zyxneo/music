@@ -1,78 +1,76 @@
 import { FormattedMessage } from "gatsby-plugin-intl";
 import React, { useEffect, useRef, useState } from "react";
 import Vex from "vexflow";
-
+import { Piano, KeyboardShortcuts, MidiNumbers, PITCH_INDEXES } from "components";
+import "../components/Piano/Piano.css";
 import { Layout, SEO, PianoKeyboard } from "components";
+import { midiKeyNames } from "utils/midi";
 
 const IndexPage = () => {
   const VF = Vex.Flow;
   const refContainer = useRef(null);
   const [context, setContext] = useState(null);
   const [stave, setStave] = useState(null);
-  const [note, setNote] = useState("c/4");
+  const [note, setNote] = useState("c4/w");
+
+
+  const firstNote = MidiNumbers.fromNote("c3");
+  const lastNote = MidiNumbers.fromNote("c5");
+  const keyboardShortcuts = KeyboardShortcuts.create({
+    firstNote: firstNote,
+    lastNote: lastNote,
+    keyboardConfig: KeyboardShortcuts.HOME_ROW,
+  });
 
   useEffect(() => {
     if (!!refContainer) {
-      console.log(refContainer.current);
       refContainer.current.innerHTML = "";
 
-      // Create an SVG renderer and attach it to the DIV element named "vf".
-      const renderer = new VF.Renderer(
-        refContainer.current,
-        VF.Renderer.Backends.SVG
-      );
+      var vf = new Vex.Flow.Factory({renderer: {elementId: refContainer.current, width: 800, height: 260}});
+      var score = vf.EasyScore();
+      var system = vf.System({
+        x: 20,
+        width: 760
+      });
+      system.addStave({
+        voices: [score.voice(score.notes(note))]
+      }).addClef('treble').addTimeSignature('4/4');
+      
+      system.addStave({
+        //voices: [score.voice(score.notes(note, {clef: 'bass', stem: 'up'}))
+      // ]
+      voices: [score.voice(score.notes('B3/1/r', {clef: 'bass', stem: 'up'}))
+      ]
+      }).addClef('bass').addTimeSignature('4/4');
+      
+      system.addConnector('singleLeft')
+      system.addConnector('boldDoubleRight')
+      system.addConnector('brace')
 
-      // Configure the rendering context.
-      renderer.resize(500, 500);
-      const cntx = renderer.getContext();
-      setContext(cntx);
-      cntx.setFont("Arial", 10);
-
-      // Create a stave of width 400 at position 10, 40 on the canvas.
-      const stv = new VF.Stave(10, 40, 400);
-      setStave(stv);
-
-      // Add a clef and time signature.
-      stv.addClef("treble").addKeySignature("E").addTimeSignature("4/4");
-
-      // Connect it to the rendering context and draw!
-      stv.setContext(cntx).draw();
+      vf.draw();
     }
   }, [note]);
-
-  useEffect(() => {
-    if (context && stave) {
-      // if (document.getElementsByClassName('vf-stavenote')) {
-      //   document.getElementsByClassName('vf-stavenote')[0].
-      // }
-      var notes = [
-        // A quarter-note C.
-        new VF.StaveNote({ clef: "treble", keys: [note], duration: "q" }),
-      ];
-      // notes.setAttribute('id', 'xyz');
-      // Create a voice in 4/4 and add the notes from above
-      var voice = new VF.Voice({ num_beats: 1, beat_value: 4 });
-      voice.addTickables(notes);
-
-      // Format and justify the notes to 400 pixels.
-      var formatter = new VF.Formatter()
-        .joinVoices([voice])
-        .format([voice], 400);
-
-      // Render voice
-      voice.draw(context, stave);
-    }
-  }, [context, note]);
 
   console.log(note);
 
   function renderNote() {
+    const randomMidiIndex = Math.floor(
+      Math.random() * (lastNote - firstNote + 1) + firstNote
+    );
+
+    console.log(randomMidiIndex)
+    const octave = Math.floor(randomMidiIndex / 12) - 1;
+    const noteKeyName = midiKeyNames[randomMidiIndex % 12];
+
     setNote(
-      ["a/5", "b/5", "c/5", "d/5", "e/5", "f/5", "g/5"][
+      `${noteKeyName}${octave}/w`
+      /*
+      ["A/4", "B/4", "C/4", "D/4", "E/4", "F/4", "G/4"][
         Math.floor(Math.random() * 7)
-      ]
+      ]*/
     );
   }
+
   return (
     <Layout className="home">
       <SEO title="TODO" />
@@ -83,9 +81,40 @@ const IndexPage = () => {
           <h1 className="intro__title">TODO</h1>
         </div>
 
-        <div id="vf" ref={refContainer}></div>
+        <div className="staff" ref={refContainer}></div>
         <button onClick={() => renderNote()}>renderNote</button>
-        <PianoKeyboard startOctave={3} octaves={5} />
+
+        <Piano
+          noteRange={{ first: firstNote, last: lastNote }}
+          playNote={(midiNumber) => {
+            console.log("playNote", midiNumber);
+            // Play a given note - see notes below
+          }}
+          stopNote={(midiNumber) => {
+            console.log("stopNote", midiNumber);
+            // Stop playing a given note - see notes below
+          }}
+          width={600}
+          keyboardShortcuts={keyboardShortcuts}
+            renderNoteLabel={({
+            keyboardShortcut,
+            midiNumber,
+            isActive,
+            isAccidental,
+          }) => (
+            <div
+              className={`Piano__NoteLabel ${
+                isAccidental
+                  ? "Piano__NoteLabel--accidental"
+                  : "Piano__NoteLabel--natural"
+              } ${isActive && "Piano__NoteLabel--active"}`}
+            >
+              {/* {isActive ? "yes" : "no"} */}
+              {midiNumber}
+            </div>
+            )}
+          activeNotes={[44, 47, 54, 60]}
+        />
       </section>
     </Layout>
   );
