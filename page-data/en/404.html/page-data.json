@@ -1,5 +1,5 @@
 {
     "componentChunkName": "component---src-pages-404-tsx",
     "path": "/en/404.html",
-    "result": {"pageContext":{"language":"en","intl":{"language":"en","languages":["en","hu"],"messages":{"site.title":"Online music practices","site.description":"Online music practices","staff.requestedKey":"Requested Key","staff.pressedKey":"Pressed Key"},"routed":true,"originalPath":"/404.html","redirect":true,"defaultLanguage":"en"}}},
+    "result": {"pageContext":{"language":"en","intl":{"language":"en","languages":["en","hu"],"messages":{"site.title":"Online music practices","site.description":"Online music practices","staff.requestedKey":"Requested Key","staff.pressedKey":"Pressed Key","404.page.title":"Not found","404.page.desc":"The page you are looking for could not be found.","site.contactInfo":"Contact Info","site.copyright":"All rights reserved.","site.languageNameOnNativeLanguage":"English"},"routed":true,"originalPath":"/404.html","redirect":true,"defaultLanguage":"en"}}},
     "staticQueryHashes": []}
