@@ -17,6 +17,12 @@ class Piano extends React.Component {
     onStopNoteInput: PropTypes.func,
     renderNoteLabel: PropTypes.func,
     className: PropTypes.string,
+    noteClasses: PropTypes.arrayOf(
+      PropTypes.shape({
+        className: PropTypes.string.isRequired,
+        midiNumber: PropTypes.number.isRequired,
+      })
+    ),
     disabled: PropTypes.bool,
     width: PropTypes.number,
     keyWidthToHeight: PropTypes.number,
@@ -83,11 +89,12 @@ class Piano extends React.Component {
   };
 
   render() {
-    const { activeNotes, onPlayNoteInput, onStopNoteInput, ...otherProps } =
+    const { activeNotes, onPlayNoteInput, onStopNoteInput, noteClasses, ...otherProps } =
       this.props;
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
+        noteClasses={noteClasses}
         onPlayNoteInput={this.handlePlayNoteInput}
         onStopNoteInput={this.handleStopNoteInput}
         {...otherProps}

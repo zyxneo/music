@@ -19,3 +19,9 @@
   --animation-duration-base: 0.2s;
   --animation-duration-base: ease-in-out;
 }
+
+body {
+  /* background-color: rgb(241, 234, 229);
+  background-image: url(images/paper.png);
+  background-repeat: repeat; */
+}

@@ -181,6 +181,7 @@ class ControlledPiano extends React.Component {
           gliss={this.state.isMouseDown}
           useTouchEvents={this.state.useTouchEvents}
           renderNoteLabel={this.renderNoteLabel}
+          noteClasses={this.props.noteClasses}
         />
       </div>
     );

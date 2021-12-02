@@ -17,6 +17,12 @@ class Keyboard extends React.Component {
     renderNoteLabel: PropTypes.func.isRequired,
     keyWidthToHeight: PropTypes.number.isRequired,
     className: PropTypes.string,
+    noteClasses: PropTypes.arrayOf(
+      PropTypes.shape({
+        className: PropTypes.string.isRequired,
+        midiNumber: PropTypes.number.isRequired,
+      })
+    ),
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     useTouchEvents: PropTypes.bool,
@@ -62,6 +68,9 @@ class Keyboard extends React.Component {
   }
 
   render() {
+    const noteClasses = this.props.noteClasses || [];
+
+    console.log('noteClasses', noteClasses)
     const naturalKeyWidth = this.getNaturalKeyWidth();
     return (
       <div
@@ -72,6 +81,7 @@ class Keyboard extends React.Component {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
           const isActive =
             !this.props.disabled && this.props.activeNotes.includes(midiNumber);
+          const className = noteClasses.find((item) => item.midiNumber === midiNumber)?.className;
           return (
             <Key
               naturalKeyWidth={naturalKeyWidth}
@@ -85,6 +95,7 @@ class Keyboard extends React.Component {
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
+              className={className}
             >
               {this.props.disabled
                 ? null

@@ -11,7 +11,10 @@ const IndexPage = () => {
   const refContainer = useRef(null);
   const [context, setContext] = useState(null);
   const [stave, setStave] = useState(null);
+  const [randomMidiIndex, setRandomMidiIndex] = useState(null);
   const [note, setNote] = useState("c4/w");
+  const [noteClasses, setNoteClasses] = useState([]);
+  const [notesDown, setNotesDown] = useState([] as number[]);
 
 
   const firstNote = MidiNumbers.fromNote("c3");
@@ -51,6 +54,10 @@ const IndexPage = () => {
     }
   }, [note]);
 
+
+  useEffect(() => {
+    renderNote()
+  },[]);
   console.log(note);
 
   function renderNote() {
@@ -58,10 +65,13 @@ const IndexPage = () => {
       Math.random() * (lastNote - firstNote + 1) + firstNote
     );
 
-    console.log(randomMidiIndex)
+    setRandomMidiIndex(randomMidiIndex)
     const octave = Math.floor(randomMidiIndex / 12) - 1;
     const noteKeyName = midiKeyNames[randomMidiIndex % 12];
 
+    setNoteClasses([
+      {midiNumber: randomMidiIndex, className: 'Piano__Key--toPress'}
+    ])
     setNote(
       `${noteKeyName}${octave}/w`
       /*
@@ -69,6 +79,22 @@ const IndexPage = () => {
         Math.floor(Math.random() * 7)
       ]*/
     );
+  }
+
+  function handleKeyDown(midiNumber: number) {
+    const newNotesDown = [...notesDown, midiNumber]
+    setNotesDown(newNotesDown)
+    console.log("playNote", midiNumber, newNotesDown, randomMidiIndex);
+
+    if(newNotesDown.sort().toString() === [randomMidiIndex].sort().toString()) {
+      renderNote()
+    }
+  }
+
+  function handleKeyUp(midiNumber: number) {
+    setNotesDown([...notesDown].filter((item) => {return item !== midiNumber}))
+    console.log("stopNote", midiNumber);
+
   }
 
   return (
@@ -84,14 +110,16 @@ const IndexPage = () => {
         <div className="staff" ref={refContainer}></div>
         <button onClick={() => renderNote()}>renderNote</button>
 
+{notesDown.map((note) => <b>{note}, </b>)}
+        <div className="Piano__wrapper">
         <Piano
           noteRange={{ first: firstNote, last: lastNote }}
           playNote={(midiNumber) => {
-            console.log("playNote", midiNumber);
+            handleKeyDown(midiNumber);
             // Play a given note - see notes below
           }}
           stopNote={(midiNumber) => {
-            console.log("stopNote", midiNumber);
+            handleKeyUp(midiNumber);
             // Stop playing a given note - see notes below
           }}
           width={600}
@@ -113,8 +141,10 @@ const IndexPage = () => {
               {midiNumber}
             </div>
             )}
-          activeNotes={[44, 47, 54, 60]}
+          // activeNotes={[44, 47, 54, 60]}
+          noteClasses={noteClasses}
         />
+        </div>
       </section>
     </Layout>
   );

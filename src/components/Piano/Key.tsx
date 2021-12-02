@@ -20,6 +20,7 @@ class Key extends React.Component {
     accidentalWidthRatio: PropTypes.number.isRequired,
     pitchPositions: PropTypes.object.isRequired,
     children: PropTypes.node,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -75,7 +76,9 @@ class Key extends React.Component {
       active,
       disabled,
       children,
+      className,
     } = this.props;
+    console.log(className)
 
     // Need to conditionally include/exclude handlers based on useTouchEvents,
     // because otherwise mobile taps double fire events.
@@ -86,6 +89,7 @@ class Key extends React.Component {
           "Piano__Key--natural": !accidental,
           "Piano__Key--disabled": disabled,
           "Piano__Key--active": active,
+          [className]: className,
         })}
         style={{
           left: ratioToPercentage(
