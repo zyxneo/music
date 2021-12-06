@@ -7,5 +7,6 @@
     "404.page.desc": "The page you are looking for could not be found.",
     "site.contactInfo": "Contact Info",
     "site.copyright": "All rights reserved.",
-    "site.languageNameOnNativeLanguage": "English"
+    "site.languageNameOnNativeLanguage": "English",
+    "site.loading": "Loading..."
 }

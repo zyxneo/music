@@ -15,7 +15,7 @@ export type Note = {
   noteIndex: number;
 };
 
-export type MidiKeyNumber = number;
+export type MidiNumber = number;
 
 export type MidiKeyName =
   | "C"
@@ -30,3 +30,10 @@ export type MidiKeyName =
   | "A"
   | "A#"
   | "B";
+
+export type NoteClass = {
+  className: string;
+  midiNumber: number;
+};
+
+export type NoteClasses = NoteClass[];

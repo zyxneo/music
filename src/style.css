@@ -18,4 +18,26 @@
 
   --animation-duration-base: 0.2s;
   --animation-duration-base: ease-in-out;
+
+  --body-bg-color: var(--white);
+}
+
+.appLoader {
+  display: flex;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--body-bg-color);
+  transition: opacity 0.5s;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.appLoader--done {
+  opacity: 0;
+  pointer-events: none;
 }

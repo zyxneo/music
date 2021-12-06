@@ -9,3 +9,43 @@
   background-color: var(--color-error);
   color: var(--color-text-inverted);
 }
+
+#vf svg {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.test {
+  animation-name: noteshake;
+  animation-duration: 0.5s;
+  animation-delay: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+.test .vf-notehead path {
+  fill: pink !important;
+}
+
+.test .vf-stem path {
+  stroke: pink !important;
+}
+
+@keyframes noteshake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate(10px, 0);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate(-10px, 0);
+  }
+}

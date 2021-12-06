@@ -11,8 +11,6 @@
 }
 .staff svg {
   max-height: 100vh;
-  width: 100%;
-  height: auto;
 }
 .line {
   stroke: var(--staff-color);

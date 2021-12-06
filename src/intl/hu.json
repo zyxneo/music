@@ -7,5 +7,6 @@
     "404.page.desc": "A keresett oldal nem található",
     "site.contactInfo": "Kapcsolat",
     "site.copyright": "Minden jog fenntartva",
-    "site.languageNameOnNativeLanguage": "Magyar"
+    "site.languageNameOnNativeLanguage": "Magyar",
+    "site.loading": "Kis türelmet..."
 }

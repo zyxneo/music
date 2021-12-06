@@ -1,23 +1,37 @@
+import React, { ReactElement } from "react";
 import { FormattedMessage } from "gatsby-plugin-intl";
-import React from "react";
+import Loadable from "react-loadable";
 
-import { Layout, SEO, PianoKeyboard } from "components";
-
-const IndexPage = () => {
+const Loader = function ({
+  children,
+  loaded,
+}: {
+  children: ReactElement;
+  loaded: any;
+}) {
+  const loaderDone = loaded ? 1 : 0;
   return (
-    <Layout className="home">
-      <SEO title="TODO" />
-
-      <section className="home__intro">
-        <div className="container intro">
-          <div className="intro__logo">hi</div>
-          <h1 className="intro__title">TODO</h1>
-        </div>
-
-        <PianoKeyboard startOctave={3} octaves={5} />
-      </section>
-    </Layout>
+    <>
+      <div className={`appLoader ${loaderDone && 'appLoader--done'}`}>
+        <FormattedMessage id="site.loading" defaultMessage="Loading..." />
+      </div>
+      {children && <>{children}</>}
+    </>
   );
 };
 
-export default IndexPage;
+export default Loadable({
+  loader: () => import("components/GuessTheNote"),
+  // @ts-ignore
+  loading: Loader,
+  render(loaded, props) {
+    return (
+      <Loader loaded={loaded}>
+        {
+          // @ts-ignore
+          React.createElement(loaded.default, props)
+        }
+      </Loader>
+    );
+  },
+});
