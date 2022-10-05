@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<svg id="svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 100 100" version="1.1">
+
+  <title>Circle of fifths</title>
+
+  <defs>
+    <style type="text/css"><![CDATA[
+        :root {
+            --stroke-width: 0.2;
+            --stroke-color: #000;
+        }
+      .outline {
+        fill: none;
+        stroke: var(--stroke-color);
+        stroke-width: var(--stroke-width);
+      }
+    ]]></style>
+
+      <script>
+        // <![CDATA[
+
+        function getNode(n, v) {
+            n = document.createElementNS("http://www.w3.org/2000/svg", n);
+            for (var p in v)
+                n.setAttributeNS(null, p, v[p]);
+            return n
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const vertex = 12; // corners of the polygon
+            const step = 7;
+            const timeout = 1000; // seconds
+
+            const semitones = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+
+            const cx = 50;
+            const cy = 50;
+            const r = 25;
+
+            document.getElementsByClassName("circle")[0].setAttribute("r", r);
+            const svg = document.getElementById("svg");
+
+            const points = []
+            for (let i = 0; i < vertex; i++) {
+                var x = cx + r * Math.cos(270 * Math.PI / 180 + 2 * Math.PI * (i / vertex)); 
+                var y = cy + r * Math.sin(270 * Math.PI / 180 + 2 * Math.PI * (i / vertex));
+                points.push({x, y})
+
+                svg.appendChild( getNode('circle', { cx: x, cy: y, r: 0.5, fill:'#ff0000' }) );
+
+if ( i === 0 ) {
+    
+                const newText = svg.appendChild( getNode('text', { x: x, y: y, 'font-size': '4' }) );
+                var textNode = document.createTextNode(semitones[i]);
+                newText.appendChild(textNode);
+}
+
+            }
+
+            let i = 0
+            let index = 0;
+            const id = window.setInterval(function(){
+                if(i >= vertex) {
+                    clearInterval(id);
+                    return;
+                }
+
+                const nextIndex = (i + 1) * step - (vertex * Math.floor((i + 1) * step / vertex));
+
+                const line = svg.appendChild( getNode('line', { x1: points[index].x, y1: points[index].y, x2: points[nextIndex].x, y2: points[nextIndex].y, stroke:'#000', class: 'outline' }) );
+
+                const begin = `${(i + 1) * timeout / 1000}s`
+                const dur = `${timeout / 1000}s`
+                const animateX = svg.appendChild( getNode('animate', { attributeName: 'x2', from: points[index].x, to: points[nextIndex].x, begin: begin, dur: dur }) );
+                const animateY = svg.appendChild( getNode('animate', { attributeName: 'y2', from: points[index].y, to: points[nextIndex].y, begin: begin, dur: dur }) );
+                line.appendChild(animateX);
+                line.appendChild(animateY);
+
+if ( i + 1 < semitones.length) {
+    
+                const newText = svg.appendChild( getNode('text', { x: points[nextIndex].x, y: points[nextIndex].y, 'font-size': '4' }) );
+                var textNode = document.createTextNode(semitones[i + 1]);
+                newText.appendChild(textNode);
+}
+
+                index = nextIndex;
+                
+                i++;
+            }, timeout)
+        }, false);
+
+        // ]]>
+    </script>
+  </defs>
+
+  <circle cx="50" cy="50" r="25" class="outline circle"/>
+</svg>

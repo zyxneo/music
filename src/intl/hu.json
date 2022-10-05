@@ -1,12 +1,13 @@
 {
-    "site.title": "Online zenei gyakorlatok",
-    "site.description": "Online zenei gyakorlatok",
-    "staff.requestedKey": "Várt billentyű",
-    "staff.pressedKey": "Lenyomott billentyű",
-    "404.page.title": "Elvitte a cica",
-    "404.page.desc": "A keresett oldal nem található",
-    "site.contactInfo": "Kapcsolat",
-    "site.copyright": "Minden jog fenntartva",
-    "site.languageNameOnNativeLanguage": "Magyar",
-    "site.loading": "Kis türelmet..."
+  "site.title": "Online zenei gyakorlatok",
+  "site.description": "Online zenei gyakorlatok",
+  "staff.requestedKey": "Várt billentyű",
+  "staff.pressedKey": "Lenyomott billentyű",
+  "404.page.title": "Elvitte a cica",
+  "404.page.desc": "A keresett oldal nem található",
+  "site.contactInfo": "Kapcsolat",
+  "site.copyright": "Minden jog fenntartva",
+  "site.languageNameOnNativeLanguage": "Magyar",
+  "site.loading": "Kis türelmet...",
+  "chords.triads": "<h1>Hello</h1><p>szoveg</p>{icon}"
 }

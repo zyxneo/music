@@ -20,6 +20,10 @@
   --animation-duration-base: ease-in-out;
 
   --body-bg-color: var(--white);
+
+  --color-red-01: #df1417;
+  --color-red-02: #8c0406;
+  --color-red-03: #490409;
 }
 
 .appLoader {

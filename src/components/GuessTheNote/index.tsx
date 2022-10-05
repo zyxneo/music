@@ -1,6 +1,6 @@
 import { FormattedMessage } from "gatsby-plugin-intl";
 import React, { useEffect, useRef, useState } from "react";
-import Vex from "vexflow";
+import Vex, { Factory, Registry, StaveNote } from "vexflow";
 import {
   Piano,
   KeyboardShortcuts,
@@ -31,37 +31,114 @@ const GuessTheNote = () => {
     if (!!refContainer && refContainer.current) {
       refContainer.current.innerHTML = "";
 
-      var vf = new Vex.Flow.Factory({
+      const registry = new Registry();
+      Registry.enableDefaultRegistry(registry);
+      const id = (id: string) => registry.getElementById(id) as StaveNote;
+      const vf: Factory = new Vex.Flow.Factory({
         renderer: { elementId: refContainer.current, width: 800, height: 260 },
       });
-      var score = vf.EasyScore();
-      var system = vf.System({
-        x: 20,
-        width: 760,
-      });
-      system
-        .addStave({
-          voices: [score.voice(score.notes(note))],
-        })
-        .addClef("treble")
-        .addTimeSignature("4/4");
+      const score = vf.EasyScore();
 
-      system
+      // Bind these three functions so the code looks cleaner.
+      // Instead of score.voice(...), just call voice(...).
+      const voice = score.voice.bind(score);
+      const notes = score.notes.bind(score);
+      const beam = score.beam.bind(score);
+      const tuplet = score.tuplet.bind(score);
+
+      let x = 20;
+      let y = 0;
+      let width = 760;
+      let spaceBetweenStaves = 10;
+      let time = "4/4";
+      let keySignature = ""; // e.g.: 'G'
+
+      function appendSystem({
+        x,
+        y,
+        width,
+        spaceBetweenStaves,
+      }: {
+        x: number;
+        y: number;
+        width: number;
+        spaceBetweenStaves: number;
+      }) {
+        const system = vf.System({ x, y, width, spaceBetweenStaves });
+        x += width;
+        return system;
+      }
+
+      score.set({ time });
+
+      let system = appendSystem({
+        x,
+        y,
+        width: 300,
+        spaceBetweenStaves,
+      });
+
+      var bar1 = voice(notes("C4/4, D4/4, E4/4, A4/8, E4"));
+
+      // BEAMS, autobeam
+      // https://github.com/0xfe/vexflow/wiki/Automatic-Beaming
+      // https://github.com/0xfe/vexflow/wiki/Beams
+      // https://github.com/acidjunk/react-vexflow-components/blob/master/src/components/stave.jsx
+      // https://github.com/0xfe/vexflow/issues/625
+      var beams1 = Vex.Flow.Beam.applyAndGetBeams(bar1); // autobeam a voice
+
+      const trebleStave = system
+        .addStave({
+          voices: [bar1],
+          // voices: [score.voice(score.notes(note))],
+        })
+        .addClef("treble");
+
+      time && trebleStave.addTimeSignature(time);
+      keySignature && trebleStave.addKeySignature(keySignature);
+
+      //
+      // system = appendSystem({width: 150});
+      // system = appendSystem({
+      //   x,
+      //   y,
+      //   width,
+      //   spaceBetweenStaves,
+      // });
+      // system.addStave({ voices: [voice(notes("C4/4, D4/4, E4/4, A4/8, E4"))] });
+      // system.addConnector('singleLeft');
+      //
+
+      const bassStave = system
         .addStave({
           //voices: [score.voice(score.notes(note, {clef: 'bass', stem: 'up'}))
           // ]
           voices: [
-            score.voice(score.notes("F3/1/r", { clef: "bass", stem: "up" })),
+            voice(notes('(G3 B3 D4)/h, A3/h[id="m1a"]', { clef: "bass" })),
           ],
+          // voices: [
+          //   score.voice(score.notes("F3/1/r", { clef: "bass", stem: "up" })),
+          // ],
         })
-        .addClef("bass")
-        .addTimeSignature("4/4");
+        .addClef("bass");
 
+      time && bassStave.addTimeSignature(time);
+      keySignature && bassStave.addKeySignature(keySignature);
+
+
+
+      system.addConnector("brace");
       system.addConnector("singleLeft");
       system.addConnector("boldDoubleRight");
-      system.addConnector("brace");
 
+      id("m1a").addModifier(
+        vf.Fingering({ number: "5", position: "above" }),
+        0
+      );
       vf.draw();
+      beams1.forEach(function (beam) {
+        return beam.setContext(vf.getContext()).draw();
+      });
     }
   }, [note]);
 
